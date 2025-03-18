@@ -1,0 +1,174 @@
+.header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  border-bottom: 1px solid #333333;
+  box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px,
+    rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px,
+    rgba(0, 0, 0, 0.09) 0px 32px 16px;
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: rgb(255, 255, 255);
+    z-index: 2;
+  }
+
+  &__body {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+  }
+
+  &__logo {
+    position: relative;
+    z-index: 3;
+    // font-weight: 800;
+    font-size: 23px;
+    color: black;
+    font-family: "Actay", sans-serif;
+    text-decoration: none;
+
+    &-text {
+      color: inherit;
+    }
+  }
+
+  &__burger {
+    display: none;
+    cursor: pointer;
+    z-index: 3;
+
+    &-line {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background-color: #333;
+      margin: 5px 0;
+    }
+  }
+
+  &__menu {
+    display: flex;
+    align-items: center;
+  }
+
+  &__list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  &__item {
+    margin-left: 20px;
+    position: relative;
+    text-transform: lowercase;
+
+    &:hover {
+      color: var(--color-accent); /* Цвет при наведении для всего пункта меню */
+    }
+
+    &--dropdown:hover .header__submenu {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+
+  &__link {
+    font-size: 20px;
+
+    &--dropdown {
+      cursor: pointer;
+      position: relative;
+      padding-right: 20px;
+
+      &::before,
+      &::after {
+        content: "";
+        width: 10px;
+        height: 2px;
+        background-color: #000000;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 0;
+      }
+
+      &::before {
+        transform: rotate(40deg);
+        right: 7px;
+      }
+
+      &::after {
+        transform: rotate(-40deg);
+        right: 0;
+      }
+    }
+  }
+
+  &__submenu {
+    position: absolute;
+    top: 100%; /* Отступ сверху, чтобы submenu не перекрывал ссылку */
+    left: 50%; /* Начало submenu по центру ссылки */
+    transform: translateX(
+      -50%
+    ); /* Сдвигаем submenu на половину его ширины влево */
+    width: 250px; /* Фиксированная ширина submenu */
+    background: #ffffff;
+    z-index: 5;
+    visibility: hidden;
+    opacity: 0;
+    padding: 25px 0 0 0;
+    text-align: center;
+    color: black;
+    box-shadow: -10px 0 12px -10px rgba(0, 0, 0, 0.1),
+      /* Тень слева */ 10px 0 12px -10px rgba(0, 0, 0, 0.1),
+      /* Тень справа */ 0 10px 12px -10px rgba(0, 0, 0, 0.1); /* Тень снизу */
+    transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
+  }
+
+  &__sublink {
+    font-size: 20px;
+    display: block;
+    padding: 20px 0;
+    transition: background-color 0.4s ease-in-out;
+
+    &:hover {
+      background-color: rgb(239, 239, 239);
+      transition: 0.4s ease-in-out;
+    }
+  }
+
+  &__contacts {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    z-index: 2;
+  }
+
+  &__button {
+    padding: 5px 15px;
+    text-transform: lowercase;
+    font-size: 15px;
+  }
+
+  &__profile-link {
+    font-size: 16px;
+  }
+
+  &__social-link {
+    font-size: 24px;
+  }
+}

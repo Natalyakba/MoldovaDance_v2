@@ -1,0 +1,51 @@
+/* Блок form */
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Элемент form__group */
+.form__group {
+  margin-bottom: 15px; /* Отступ между группами */
+}
+
+/* Элемент form__label */
+.form__label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Элемент form__text */
+.form__text {
+  display: inline-block;
+  margin-right: 10px;
+  color: #555;
+}
+
+/* Элемент form__link */
+.form__link {
+  color: pink;
+  text-decoration: none;
+}
+
+.form__link:hover {
+  text-decoration: underline; /* Подчеркивание при наведении */
+}
+
+/* Элемент form__submit-btn */
+.form__submit-btn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 10px; /* Отступ сверху */
+}
+
+.form__submit-btn:hover {
+  background-color: #0056b3; /* Изменение цвета при наведении */
+}

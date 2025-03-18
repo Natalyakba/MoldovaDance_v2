@@ -1,0 +1,111 @@
+// // Блок темы
+// .topic {
+//   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+//   border-radius: 20px;
+//   padding: 20px;
+//   margin: 20px;
+//   display: none;
+
+//   &__block {
+//     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+//     border-radius: 20px;
+//     padding: 20px;
+//     margin: 20px;
+//   }
+
+//   &__title {
+//     color: #ca4581;
+//     font-size: 25px;
+//     padding: 10px;
+//     display: flex;
+//     cursor: pointer;
+
+//     &.active {
+//       color: #007bff;
+//     }
+//   }
+
+//   &__heading {
+//     font-size: 1.5rem;
+//     font-weight: bold;
+//   }
+
+//   &__date {
+//     color: #666;
+//     font-size: 0.9rem;
+//   }
+
+//   &__description {
+//     margin-bottom: 20px;
+//     display: none; // Скрыто по умолчанию
+
+//     &.active {
+//       display: block; // Показываем при активации
+//     }
+//   }
+// }
+
+.propose__form {
+  display: none;
+}
+
+.topic {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 20px;
+  padding: 20px;
+  margin: 20px;
+
+  &:hover {
+    background-color: #ebebeb;
+  }
+
+  &__head {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    font-size: 25px;
+  }
+
+  &__title {
+    color: var(--color-accent);
+  }
+
+  &__date {
+    color: #bfbfbf;
+    margin-left: auto;
+  }
+
+  &__text {
+    line-height: 30px;
+    font-size: 18px;
+    padding: 20px;
+  }
+}
+
+.comment {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  background-color: white;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  gap: 10px;
+  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
+
+  &__meta {
+    display: flex;
+  }
+
+  &__author {
+    color: var(--color-accent);
+  }
+
+  &__date {
+    color: #bfbfbf;
+    margin-left: auto;
+  }
+}
+
+.comments__have {
+  margin: 20px 0px;
+}

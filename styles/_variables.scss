@@ -1,0 +1,26 @@
+:root {
+  --color-white: #ffffff;
+  --color-accent: #ca4581;
+  --color-accent-light: #f3539b;
+  --color-grey-dark: #171717;
+
+  --border: 1px solid var(--color-dark);
+  --border-radius: 14px;
+  --border-radius-small: 7px;
+  --bordder-radius-large: 45px;
+  --shadow: 0 5px 0 0 var(--color-dark);
+
+  --font-family-base: "Actay", sans-serif;
+
+  --container-width: 1240px;
+  --container-padding-x: 20px;
+
+  //расстояние между секциями
+  --section-padding-y: 70px;
+
+  // значения высоты для полей ввода
+  --input-height: 59px;
+  --button-height: 68px;
+
+  --transition-duration: 0.2s;
+}

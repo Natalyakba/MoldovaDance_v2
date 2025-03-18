@@ -1,0 +1,204 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+.main-content {
+  flex: 1;
+  padding-top: 60px; // Учитываем высоту фиксированного хедера
+}
+
+body {
+  @include fluid-text(18, 16);
+
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-family-base);
+  font-weight: 400;
+  line-height: 1.28;
+  color: var(--color-dark);
+  background-color: var(--color-light);
+}
+
+a,
+button,
+input,
+textarea,
+svg * {
+  transition-duration: var(--transition-duration);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: color var(--transition-duration) ease-in-out;
+
+  &:hover {
+    color: var(--color-accent); /* Цвет при наведении, как в header */
+    transition: 0.4s ease-in-out;
+  }
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 400;
+}
+
+h1,
+.h1 {
+  @include fluid-text(100, 43);
+  text-transform: uppercase;
+
+  &__title {
+    text-align: center;
+    padding-top: 70px;
+    padding-bottom: 30px;
+  }
+}
+
+h2,
+.h2 {
+  @include fluid-text(30, 36);
+  color: var(--color-accent);
+  text-transform: uppercase;
+}
+
+h3,
+.h3 {
+  @include fluid-text(20, 26);
+  padding-top: 10px;
+}
+
+h4,
+.h4 {
+  @include fluid-text(20, 18);
+}
+
+.span-accent {
+  color: var(--color-accent);
+}
+
+.list--inline {
+  display: inline-flex; // Используем inline-flex для строчного отображения
+  flex-wrap: wrap; // Разрешаем перенос на новую строку
+  gap: 5px; // Отступ между элементами
+}
+
+.list--inline__item {
+  display: inline-block; // Делаем элементы строчно-блочными
+
+  &:not(:last-child)::after {
+    content: " \25CF"; // Символ ●
+    color: #ca4581; // Цвет разделителя
+    margin-left: 5px; // Отступ после символа
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+
+    &:hover {
+      text-decoration: underline;
+      color: #ca4581;
+      transition: 0.4s ease-in-out;
+    }
+  }
+}
+
+.align-right {
+  text-align: right;
+}
+
+// Базовые стили для всех кнопок
+button {
+  padding: 10px;
+  border: none;
+  color: var(--color-white);
+  font-weight: 400;
+  border-radius: var(--border-radius-small);
+  margin: 10px;
+  background-color: var(--color-accent);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  // transition: $transition;
+  font-size: 16px;
+  text-align: center;
+  display: inline-block;
+
+  &:hover {
+    background-color: var(--color-accent-light);
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+input,
+textarea {
+  padding: 10px;
+  margin: 10px 0px;
+  border-radius: 10px;
+  font-size: 18px;
+  border: #ccc;
+  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
+
+  &:focus {
+    border-color: var(--color-accent); /* Изменение цвета рамки при фокусе */
+    outline: none;
+    -webkit-box-shadow: 2px 3px 13px 2px rgba(202, 69, 129, 0.38);
+    -moz-box-shadow: 2px 3px 13px 2px rgba(202, 69, 129, 0.38);
+    box-shadow: 2px 3px 13px 2px rgba(202, 69, 129, 0.38);
+  }
+}
+
+input {
+  width: 350px;
+}
+
+// Миксин для создания кнопок разной ширины
+@mixin button-size($width: auto, $padding: 10px 20px) {
+  width: $width;
+  padding: $padding;
+}
+
+// Маленькая кнопка (ширина по содержимому + отступы)
+.btn-small {
+  @include button-size(auto, 10px 20px);
+}
+
+// Средняя кнопка (фиксированная ширина)
+.btn-medium {
+  @include button-size(150px);
+}
+
+// Большая кнопка (ширина на весь контейнер)
+.btn-large {
+  @include button-size(100%);
+  display: block;
+}
+
+// Адаптивность для больших кнопок
+@media (max-width: 768px) {
+  .btn-large {
+    width: 90%;
+    margin: 10px auto;
+  }
+}
+
+// Дополнительные стили для кнопок с иконками
+button.with-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; // Отступ между иконкой и текстом
+}
+
+.footer {
+  flex-shrink: 0;
+}
