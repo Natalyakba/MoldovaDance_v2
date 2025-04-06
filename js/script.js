@@ -103,3 +103,16 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
+// Скрытие регистрации по умолчанию и отображение при клике на кнопку
+document.querySelectorAll(".registration").forEach((card) => {
+  const showBtn = card.querySelector(".button-reg");
+  const topicReg = card.querySelector(".topic-reg");
+
+  if (showBtn && topicReg) {
+    showBtn.addEventListener("click", function () {
+      topicReg.style.display =
+        topicReg.style.display === "none" ? "block" : "none";
+    });
+  }
+});

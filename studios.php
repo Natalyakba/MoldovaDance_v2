@@ -1,22 +1,9 @@
 <?php 
     session_start();
     require_once './config/connect.php';
-
-    $id_eventtype = $_GET['id']; // id раздела мероприятий
-
-    if ($id_eventtype != 0 && $id_eventtype != 4) {
-    $event = mysqli_query($connect, "SELECT * FROM `events`WHERE event_type = '$id_eventtype'");
-    $event = mysqli_fetch_all($event); //получаем все мероприятия этого типа, который передан из меню
-
-    $type = mysqli_query($connect, "SELECT title_event_type FROM `event_types`where id_event_type = '$id_eventtype'");
-    $type = mysqli_fetch_array($type); // получаем тип, который мы выбрали в меню и ставим в название
-    } else {
-    $event = mysqli_query($connect, "SELECT * FROM `events`");
-    $event = mysqli_fetch_all($event);
-    }
-
-
-
+    
+    $content = mysqli_query($connect, "SELECT * FROM `studios`");
+    $content = mysqli_fetch_all($content);
 ?>
 
 <!DOCTYPE html>
@@ -31,7 +18,7 @@
         <link href="https://fonts.googleapis.com/css?family=Manrope:regular,500,600,700,800&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/font-awesome.min.css">
-        <title>Moldova Dancers: events</title>
+        <title>Moldova Dancers: studios</title>
     </head>
     <body>
         <header class="header">
@@ -129,132 +116,72 @@
                 </div>
             </div>
         </header>
-        
+               
         <main class="main-content">
             <div class="container">
-                <!-- Заголовок страницы -->
-                <h1 class="h1__title"><?= $type[0] ?></h1>
-
-                <!-- Список карточек -->
-                <div class="main-content__cards">
-                    <?php
-                        foreach ($event as $event) {
-                    ?>
-                        <!-- Карточка новости -->
-                        <div class="card">
-                            <!-- Фото -->
-                            <div class="card__image">
-                                <img style="width: 300px; opacity: 0.8" src="<?= $event[4] ?>">
+            <!-- Заголовок страницы -->
+            <h1 class="h1__title">Studios</h1>
+            <div class="main-content__cards">
+                <?php
+                  foreach ($content as $content) {
+                ?>
+                <div class="card">
+                    <div class="card__image"><img src="<?= $content[2] ?>"></div>
+                    <div class="card__content">
+                        <h2 class="cartd__title align-right"><?= $content[1] ?></h2>
+                        <h3 class="card__city align-right">
+                        <?php
+                            $city = mysqli_query($connect, "SELECT cities.name_city 
+                                FROM cities 
+                                JOIN dancers ON cities.id_city = dancers.city_dancer
+                                where dancers.id_dancer = '$content[0]'");
+                            $city = mysqli_fetch_array($city);
+                        ?>
+                        <?= $city[0] ?>
+                        </h3>
+                        <div class="card__text"><?= $content[3] ?></div>
+                        <?php
+                            if ($content[4]) { 
+                        ?>
+                            <div class="card__list">
+                                <span class="span-accent">Schedule: </span>
+                                <span class="list--inline"><a href="<?= $content[4] ?>"><?= $content[4] ?></a></span>
                             </div>
-                            <!-- Контент справа -->
-                            <div class="card__content">
-                                <h2 class="card__title"><?= $event[1] ?></h2>
-                                <h3 class="card__date align-right">[<?= $event[2] ?>]</h3>
+                        <?php
+                            }
+                            $dancer = mysqli_query($connect, "SELECT dancers.name_dancer FROM dancers
+                                JOIN dancer_studio
+                                ON dancers.id_dancer = dancer_studio.id_dancer
+                                WHERE dancer_studio.id_studio = '$content[0]';");
+                            $dancer = mysqli_fetch_all($dancer);
+                            if ($dancer) { 
+                        ?>
+                            <div class="card__list">
+                                <span class="span-accent">Dancers: </span>
                                 <?php
-                                        $city = mysqli_query($connect, "SELECT cities.name_city 
-                                            FROM cities 
-                                            JOIN events ON cities.id_city = events.event_city
-                                            where events.id_event = $event[0]");
-                                        $city = mysqli_fetch_array($city);
+                                    foreach ($dancer as $dancer) {
                                 ?>
-                                <h3 class="card__city align-right"><?= $city[0] ?></h3>
-
-                                <p class="card__text"><?= $event[5] ?></p>
-                                
-                                <div class="card__list">
-                                    <span class="span-accent">Styles: </span>
-                                    <span class="list--inline">
-                                        <?php
-                                        $style = mysqli_query($connect, "SELECT styles.id_style, styles.name_style
-                                                                        FROM styles
-                                                                        RIGHT JOIN event_style
-                                                                        ON styles.id_style = event_style.id_style
-                                                                        RIGHT JOIN events  
-                                                                        ON events.id_event = event_style.id_event
-                                                                        WHERE event_style.id_event = $event[0]");
-                                        $style = mysqli_fetch_all($style);
-                                        foreach ($style as $style) {
-                                        ?>
-                                        <span class="list--inline__item">
-                                            <a href="styles.php#<?= $style[1] ?>"><?= $style[1] ?></a>
-                                        </span>
-                                        <?php
-                                        }
-                                        ?>
-                                    </span>
-                                </div>
-                                <div class="card__list">
-                                    <span class="span-accent">Representative: </span>
-                                    <span class="list--inline">
-                                        <?php
-                                            $guests = mysqli_query($connect, "SELECT dancers.name_dancer 
-                                                FROM dancers 
-                                                RIGHT JOIN event_guest 
-                                                ON dancers.id_dancer = event_guest.id_dancer 
-                                                RIGHT JOIN events 
-                                                on events.id_event = event_guest.id_event 
-                                                WHERE event_guest.id_event = $event[0];");
-                                            $guests  = mysqli_fetch_all($guests);
-                                            foreach ($guests as $guests) {
-                                        ?>
-                                        <span class="list--inline__item">
-                                            <a href="styles.php#<?= $guests[0] ?>"><?= $guests[0] ?></a>
-                                        </span>
-                                        <?php
-                                        }
-                                        ?>
-                                    </span>
-                                </div>
-                                <div class="card__list">
-                                    <span class="span-accent">Price: </span>
-                                    <span class="list--inline"><?= $event[9] ?></span>
-                                </div>
-                                <div class="card__list">
-                                    <span class="span-accent">Information: </span>
-                                    <span class="list--inline"><a href="<?= $event[6] ?>"><?= $event[6] ?></a></span>
-                                </div>
-                                <div class="card__list">
-                                    <span class="span-accent">Contact: </span>
-                                    <span class="list--inline"><a href="<?= $event[7] ?>"><?= $event[7] ?></a></span>
-                                </div>
-
-                                <div class="registration">
-                                    <button class="button-reg">Registration</button>
-                                    <div class="topic-reg" style="display: none;">
-                                        <form action="vendor/create_reg.php" method="post">
-                                        
-                                        <?php if ($_SESSION['user']) { ?>
-                                            <input type="text" name="first_name" class="first_name" value="<?= $_SESSION['user']['first_name'] ?>">
-                                            <input type="text" name="second_name" class="second_name" value="<?= $_SESSION['user']['last_name'] ?>">
-                                            <input type="text" name="phone_number" class="phone_number" value="<?= $_SESSION['user']['phone_user'] ?>">
-                                        <?php } else { ?>
-                                            <input type="text" name="first_name" class="first_name" placeholder="First Name">
-                                            <input type="text" name="second_name" class="second_name" placeholder="Last Name">
-                                            <input type="text" name="phone_number" class="phone_number" placeholder="Phone Number">
-                                        <?php } ?>
-                                        
-                                            <input type="hidden" name="id_event" class="id_event" value="<?= $event[0] ?>">
-                                            <br>
-                                            <button type="submit" class="send">READY</button>
-                                            <button type="reset">RESET</button>
-                                        
-                                        </form>
-                                    </div>
-                                </div>
-                                        
-                                <!-- Ссылка, если она есть -->
-                                <?php if ($news[4]) { ?>
-                                    <div class="card__link"><span style="color: #ca4581">Link: </span><a href="<?= $news[4] ?>"><?= $news[4] ?></a></div>
-                                <?php } ?>
+                                    <span class="list--inline"><a href="dancers.php#<?= $dancer[0] ?>"><?= $dancer[0] ?></a></span>
+                                <?php
+                                    } 
+                                ?>
                             </div>
+                        <?php
+                            }
+                        ?>
+                        <div class="card__list">
+                            <span class="span-accent">Link: </span>
+                            <span class="list--inline"><a href="<?= $content[6] ?>"><?= $content[6] ?></a></span>
                         </div>
-                    <?php
-                        }
-                    ?>       
+                    </div>
                 </div>
+
+                <?php
+                  }
+                ?>
+            </div>
             </div>
         </main>
-
         <div id="modal" class="modal" >
             <div class="modal__content">
                 <div class="modal__header">
@@ -304,7 +231,6 @@
                 </div>
             </div>
         </div>
-
         <footer class="footer">
             <div class="container">
                 <div class="footer__body">
@@ -377,7 +303,6 @@
                 </div>
             </div>
         </footer>
-
         <script src="js/script.js"></script>
     </body>
 </html>

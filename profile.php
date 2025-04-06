@@ -1,6 +1,8 @@
 <?php 
     session_start();
     require_once './config/connect.php';
+
+    
 ?>
 
 <!DOCTYPE html>
@@ -115,13 +117,98 @@
         </header>
         
         <main class="main-content">
-
             <!-- Основной контент страницы -->
-            <!-- Например: -->
             <div class="container">
-            <h1>Welcome to Moldova Dance</h1>
-            <p>This is the main content of the page.</p>
+            <h1 class="h1__title">My Profile</h1>
+            <div class="card">
+                <div class="" style="display:flex">
+                
+                    <div class=""  style="display:flex; flex-direction: column">
+                        <span class="span-accent">Login: </span>
+                        <span class="span-accent">First Name: </span>
+                        <span class="span-accent">Last Name: </span>
+                        <span class="span-accent">Email: </span>
+                        <span class="span-accent">Phone: </span>
+                    </div>
+                    <div class="" style="display:flex; flex-direction: column">
+                        <span><?= $_SESSION['user']['login_user']?></span>
+                        <span><?= $_SESSION['user']['first_name']?></span>
+                        <span><?= $_SESSION['user']['last_name']?></span>
+                        <span><?= $_SESSION['user']['email_user']?></span>
+                        <span><?= $_SESSION['user']['phone_user']?></span>
+                     
+                    </div>
+                </div>
+                <?php
+                    if ($_SESSION['user']['login_user'] == 'ADMIN'){                       
+                ?>
+                <button onclick="window.location.href='admin.php'">Administration</button>
+                <?php
+                    }
+                ?>
+                
+                
             </div>
+            <div class="card">
+    <div id="chatbox"></div>
+    <input type="text" id="userInput" placeholder="Введите сообщение">
+    <button id="sendBtn" onclick="sendMessage()">Отправить</button>
+</div>
+
+<style>
+    #chatbox { width: 350px; height: 400px; border: 1px solid #ccc; overflow-y: scroll; padding: 10px; }
+    #userInput { width: 80%; }
+    #sendBtn { width: 18%; }
+</style>
+
+<script>
+    // Функция для отправки сообщения
+    function sendMessage() {
+        // Получаем сообщение пользователя из поля ввода
+        const userInput = document.getElementById("userInput").value;
+
+        if (userInput.trim() === "") {
+            return; // Не отправляем пустое сообщение
+        }
+
+        // Отображаем сообщение пользователя в чате
+        const chatbox = document.getElementById("chatbox");
+        chatbox.innerHTML += `<div><strong>Вы:</strong> ${userInput}</div>`;
+
+        // Очистить поле ввода
+        document.getElementById("userInput").value = "";
+
+        // Прокрутить чат до самого низа
+        chatbox.scrollTop = chatbox.scrollHeight;
+
+        // Отправляем запрос на сервер
+        fetch('http://127.0.0.1:5002/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message: userInput })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Отображаем ответ бота
+            chatbox.innerHTML += `<div><strong>Бот:</strong> ${data.response}</div>`;
+            chatbox.scrollTop = chatbox.scrollHeight;  // Прокрутить чат вниз
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    // Обработчик нажатия кнопки Enter для отправки сообщения
+    document.getElementById("userInput").addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            sendMessage();
+        }
+    });
+</script>
+
+
         </main>
         <div id="modal" class="modal" >
             <div class="modal__content">
@@ -244,6 +331,7 @@
                 </div>
             </div>
         </footer>
+        
         <script src="js/script.js"></script>
     </body>
 </html>

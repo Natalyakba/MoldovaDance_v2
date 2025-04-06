@@ -1,55 +1,9 @@
-// // Блок темы
-// .topic {
-//   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-//   border-radius: 20px;
-//   padding: 20px;
-//   margin: 20px;
-//   display: none;
-
-//   &__block {
-//     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-//     border-radius: 20px;
-//     padding: 20px;
-//     margin: 20px;
-//   }
-
-//   &__title {
-//     color: #ca4581;
-//     font-size: 25px;
-//     padding: 10px;
-//     display: flex;
-//     cursor: pointer;
-
-//     &.active {
-//       color: #007bff;
-//     }
-//   }
-
-//   &__heading {
-//     font-size: 1.5rem;
-//     font-weight: bold;
-//   }
-
-//   &__date {
-//     color: #666;
-//     font-size: 0.9rem;
-//   }
-
-//   &__description {
-//     margin-bottom: 20px;
-//     display: none; // Скрыто по умолчанию
-
-//     &.active {
-//       display: block; // Показываем при активации
-//     }
-//   }
-// }
-
 .propose__form {
   display: none;
 }
 
-.topic {
+.topic,
+.card {
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   border-radius: 20px;
   padding: 20px;
@@ -57,8 +11,12 @@
 
   &:hover {
     background-color: #ebebeb;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+    transition: 0.4s ease-in-out;
   }
+}
 
+.topic {
   &__head {
     padding: 10px;
     display: flex;

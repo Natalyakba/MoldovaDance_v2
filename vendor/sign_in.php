@@ -18,6 +18,9 @@ if (mysqli_num_rows($check_user) > 0) {
         "id_user" => $user['id_user'],
         "email_user" => $user['email_user'],
         "login_user" => $user['login_user'], 
+        "first_name" => $user['first_name'], 
+        "last_name" => $user['last_name'], 
+        "phone_user" => $user['phone_user'], 
     ];
 
     // Перенаправляем на страницу профиля
