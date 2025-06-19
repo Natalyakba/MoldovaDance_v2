@@ -1,8 +1,6 @@
 <?php 
     session_start();
     require_once './config/connect.php';
-    $content = mysqli_query($connect, "SELECT id_dancer FROM `teachers`");
-    $content = mysqli_fetch_all($content);
 ?>
 
 <!DOCTYPE html>
@@ -122,56 +120,52 @@
                 <!-- Заголовок страницы -->
                 <h1 class="h1__title">Teachers</h1>
                 <div class="main-content__cards">
+                
                     <?php
-                        foreach ($content as $content) {
-                        $teacher = mysqli_query($connect, "SELECT * FROM `dancers` WHERE `id_dancer` = '$content[0]'");
-                        $teacher = mysqli_fetch_array($teacher);
-                    ?>
+                        $teachers = mysqli_query($connect, "SELECT * FROM `dancers` WHERE `is_teacher` = 1");
+                        while ($teacher = mysqli_fetch_assoc($teachers)):
+                            $id_teacher = $teacher['id_dancer'];
+                            $photo_teacher = $teacher['photo_dancer'];
+                            $name_teacher = $teacher['name_dancer'];
+                            $city = mysqli_query($connect, "SELECT cities.name_city 
+                                                FROM cities 
+                                                JOIN dancers ON cities.id_city = dancers.city_dancer
+                                                where dancers.id_dancer = $id_teacher");
+                            $city = mysqli_fetch_assoc($city);
+                            $city = $city['name_city'];
+                            $about_teacher = $teacher['about_dancer'];
+                            $studio = mysqli_query($connect, "SELECT studios.name_studio, studios.id_studio FROM studios
+                                            JOIN dancer_studio
+                                            ON dancer_studio.id_studio = studios.id_studio
+                                            WHERE dancer_studio.id_dancer = $id_teacher;");
+                            $studio = mysqli_fetch_all($studio);
+                            $link_teacher = $teacher['link_dancer'];
+                        ?>
+                        
                         <div class="card">
-                            <div class="card__image"><img src="<?= $teacher[3] ?>"></div>
-                            <div class="card__content">
-                                <h2 class="card__title align-right"><?= $teacher[1] ?></h2>
-                                <h3 class="card__city align-right">
-                                    <?php
-                                        $city = mysqli_query($connect, "SELECT cities.name_city 
-                                            FROM cities 
-                                            JOIN dancers ON cities.id_city = dancers.city_dancer
-                                            where dancers.id_dancer = '$teacher[0]'");
-                                        $city = mysqli_fetch_array($city);
-                                    ?>
-                                    <?= $city[0] ?>
-                                </h3>
-                                <div class="card__text"><?= $teacher[5] ?></div>
-                                <?php
-                                    $studio = mysqli_query($connect, "SELECT studios.name_studio FROM studios
-                                        JOIN dancer_studio
-                                        ON dancer_studio.id_studio = studios.id_studio
-                                        WHERE dancer_studio.id_dancer = '$content[0]';");
-                                    $studio = mysqli_fetch_all($studio);
-                                    if ($studio) { 
-                                ?>
+                                <div class="card__image"><img src="<?= $photo_teacher ?>"></div>
+                                <div class="card__content">
+                                    <h2 class="card__title align-right"><?= $name_teacher ?></h2>
+                                    <h3 class="card__city align-right"><?= $city ?></h3>
+                                    <div class="card__text"><?= $about_teacher ?></div>
+                                    <?php if ($studio) { ?>
+                                        <div class="card__list">
+                                            <span class="span-accent">Studios: </span>
+                                            <?php foreach ($studio as $studio) { ?>
+                                                <span class="list--inline">
+                                                    <a href="studios.php#studio-<?= $studio[1] ?>"><?= $studio[0] ?></a>
+                                                </span>
+                                            <?php } ?>
+                                        </div>
+                                    <?php } ?>
                                     <div class="card__list">
-                                        <span class="span-accent">Studios: </span>
-                                        <?php
-                                            foreach ($studio as $studio) {
-                                        ?>
-                                            <span class="list--inline"><a href="studios.php#<?= $studio[0] ?>"><?= $studio[0] ?></a></span>
-                                        <?php
-                                            }
-                                        ?>
+                                        <span class="span-accent">Link: </span>
+                                        <span class="list--inline"><a href="<?= $link_teacher ?>"><?= $link_teacher ?></a></span>
                                     </div>
-                                <?php
-                                    }
-                                ?>
-                                <div class="card__list">
-                                    <span class="span-accent">Link: </span>
-                                    <span class="list--inline"><a href="<?= $teacher[4] ?>"><?= $teacher[4] ?></a></span>
                                 </div>
                             </div>
-                        </div>
-                    <?php
-                        }
-                    ?>
+                    <?php endwhile; ?>
+            
                 </div>
             </div>
         </main>
@@ -179,13 +173,13 @@
             <div class="modal__content">
                 <div class="modal__header">
                     <span class="modal__title">Authorization</span>
-                    <button id="closeModalBtn" class="modal__close-btn">Close</button>
+                    <button id="closeModalBtn">Close</button>
                 </div>
                 
                 <div class="modal__body">
                     <form action="vendor/sign_in.php" id="loginForm" method="post" class="form">
                         <div class="form__group">
-                            <label for="email" class="form__label">E-mail</label>
+                            <label for="loginEmail" class="form__label">E-mail</label>
                             <input
                                 type="email"
                                 id="loginEmail"
@@ -197,7 +191,7 @@
                             />
                         </div>
                         <div class="form__group">
-                            <label for="password" class="form__label">Password</label>
+                            <label for="loginPassword" class="form__label">Password</label>
                             <input
                                 type="password"
                                 id="loginPassword"

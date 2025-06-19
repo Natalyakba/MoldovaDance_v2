@@ -1,0 +1,42 @@
+.event-form {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.form-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-section {
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.section-title {
+  margin: 0 0 15px 0;
+  font-size: 1.1rem;
+  color: #444;
+  font-weight: 600;
+}
+
+/* Form Elements */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-label {
+  font-size: 0.9rem;
+  color: #555;
+  font-weight: 500;
+}

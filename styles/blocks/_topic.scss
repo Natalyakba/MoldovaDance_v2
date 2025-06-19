@@ -3,7 +3,8 @@
 }
 
 .topic,
-.card {
+.card,
+.mini-card {
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   border-radius: 20px;
   padding: 20px;
@@ -17,6 +18,8 @@
 }
 
 .topic {
+  scroll-margin-top: 100px; /* Высота вашего хедера + небольшой отступ */
+
   &__head {
     padding: 10px;
     display: flex;
@@ -65,5 +68,6 @@
 }
 
 .comments__have {
+  display: none;
   margin: 20px 0px;
 }

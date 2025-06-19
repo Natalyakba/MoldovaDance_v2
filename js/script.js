@@ -58,50 +58,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
   });
-
-  // Разворачивание comments__form или открытие модального окна
-  document.querySelectorAll(".comments__add").forEach((commentAdd) => {
-    const commentBtn = commentAdd.querySelector(".button");
-    const commentForm = commentAdd.querySelector(".comments__form");
-    const isUserLoggedIn = commentAdd.dataset.user === "true"; // Проверяем авторизацию
-
-    if (commentBtn) {
-      commentBtn.addEventListener("click", function () {
-        if (isUserLoggedIn && commentForm) {
-          commentForm.style.display =
-            commentForm.style.display === "none" ? "block" : "none";
-        } else {
-          openModal();
-        }
-      });
-    }
-  });
-
-  // Скрытие комментариев по умолчанию и отображение при клике на кнопку
-  document.querySelectorAll(".comments").forEach((commentsBlock) => {
-    const showBtn = commentsBlock.querySelector(".button");
-    const commentsHave = commentsBlock.querySelector(".comments__have");
-
-    if (showBtn && commentsHave) {
-      commentsHave.style.display = "none";
-
-      showBtn.addEventListener("click", function () {
-        commentsHave.style.display =
-          commentsHave.style.display === "none" ? "block" : "none";
-      });
-    }
-  });
-
-  // Проверка на пустые комментарии перед отправкой формы
-  document.querySelectorAll(".form").forEach((form) => {
-    form.addEventListener("submit", function (event) {
-      const textarea = form.querySelector(".form__textarea");
-      if (!textarea.value.trim()) {
-        event.preventDefault();
-        alert("Комментарий не может быть пустым!");
-      }
-    });
-  });
 });
 
 // Скрытие регистрации по умолчанию и отображение при клике на кнопку

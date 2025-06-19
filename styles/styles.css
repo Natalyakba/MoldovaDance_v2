@@ -206,6 +206,7 @@ svg * {
   --color-accent: #ca4581;
   --color-accent-light: #f3539b;
   --color-grey-dark: #171717;
+  --color-grey-light: #ebebeb;
   --border: 1px solid var(--color-dark);
   --border-radius: 14px;
   --border-radius-small: 7px;
@@ -313,7 +314,7 @@ h1__title,
 
 h2,
 .h2 {
-  font-size: clamp(36px, 2.0833333333vw, 30px);
+  font-size: clamp(36px, 1.3888888889vw, 20px);
   color: var(--color-accent);
   text-transform: uppercase;
 }
@@ -385,7 +386,8 @@ button:disabled {
 }
 
 input,
-textarea {
+textarea,
+select {
   padding: 10px;
   margin: 10px 0px;
   border-radius: 10px;
@@ -394,7 +396,8 @@ textarea {
   box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
 }
 input:focus,
-textarea:focus {
+textarea:focus,
+select:focus {
   border-color: var(--color-accent); /* Изменение цвета рамки при фокусе */
   outline: none;
   box-shadow: 2px 3px 13px 2px rgba(202, 69, 129, 0.38);
@@ -402,6 +405,53 @@ textarea:focus {
 
 input {
   width: 350px;
+}
+
+textarea {
+  min-height: 150px;
+}
+
+/* Radio Buttons */
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.radio-input {
+  display: none;
+}
+
+.radio-custom {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.radio-input:checked + .radio-custom {
+  border-color: var(--color-accent);
+}
+
+.radio-input:checked + .radio-custom::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 8px;
+  height: 8px;
+  background: var(--color-accent);
+  border-radius: 50%;
 }
 
 .btn-small {
@@ -435,6 +485,99 @@ button.with-icon {
 
 .footer {
   flex-shrink: 0;
+}
+
+/* Radio Buttons */
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.radio-input {
+  display: none;
+}
+
+.radio-custom {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.radio-input:checked + .radio-custom {
+  border-color: var(--color-accent);
+}
+
+.radio-input:checked + .radio-custom::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 8px;
+  height: 8px;
+  background: var(--color-accent);
+  border-radius: 50%;
+}
+
+/* Multi-Select Components */
+.multi-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.selected-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.selected-tag {
+  background: var(--color-accent-light);
+  color: var(--color-white);
+  padding: 2px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.selected-tag button {
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0;
+}
+
+/* Buttons */
+.form-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.no-marg {
+  margin: none;
 }
 
 .header {
@@ -694,17 +837,12 @@ button.with-icon {
 /* Элемент form__submit-btn */
 .form__submit-btn {
   padding: 10px 20px;
-  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
   font-size: 1rem;
   cursor: pointer;
   margin-top: 10px; /* Отступ сверху */
-}
-
-.form__submit-btn:hover {
-  background-color: #0056b3; /* Изменение цвета при наведении */
 }
 
 /* Блок modal */
@@ -786,6 +924,11 @@ button.with-icon {
   align-items: center;
   gap: 20px;
 }
+.main-content__index {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
 
 .card {
   display: flex;
@@ -793,24 +936,37 @@ button.with-icon {
   gap: 20px;
   padding: 35px;
   margin-bottom: 20px;
+  max-width: 900px;
+  width: 100%;
 }
 .card:hover img {
   transition: 0.4s ease-in-out;
   opacity: 1;
 }
 .card__image {
-  flex: 0 0 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  width: 300px;
+  overflow: hidden; /* Это обрежет всё, что выходит за границы */
 }
 .card__image img {
-  opacity: 0.8;
-  width: 300px;
+  max-height: 100%;
+  max-width: 100%;
+  width: auto;
   height: auto;
+  -o-object-fit: contain;
+     object-fit: contain; /* Сохраняет пропорции, помещая изображение целиком */
+  opacity: 0.8;
 }
 .card__content {
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  word-wrap: break-word;
 }
 .card__title {
   font-size: 2rem;
@@ -824,10 +980,11 @@ button.with-icon {
   margin-top: 10px;
   margin-bottom: 10px;
 }
-.card .card__list {
-  display: flex;
-  gap: 10px;
-  margin: 5px;
+.card .card__list a {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px;
 }
 .card__link {
   font-size: 0.9rem;
@@ -849,19 +1006,24 @@ button.with-icon {
 }
 
 .topic,
-.card {
+.card,
+.mini-card {
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   border-radius: 20px;
   padding: 20px;
   margin: 20px;
 }
 .topic:hover,
-.card:hover {
+.card:hover,
+.mini-card:hover {
   background-color: #ebebeb;
   box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
   transition: 0.4s ease-in-out;
 }
 
+.topic {
+  scroll-margin-top: 100px; /* Высота вашего хедера + небольшой отступ */
+}
 .topic__head {
   padding: 10px;
   display: flex;
@@ -903,5 +1065,249 @@ button.with-icon {
 }
 
 .comments__have {
+  display: none;
   margin: 20px 0px;
+}
+
+.chat-container {
+  width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.message-container {
+  height: 400px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
+
+.input-container {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+#userInput {
+  flex-grow: 1;
+  padding: 8px;
+  margin-right: 10px;
+}
+
+.button-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+table td,
+table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+table tr:hover {
+  background-color: #ddd;
+}
+table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: var(--color-accent);
+  color: white;
+}
+
+.event-form {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.form-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-section {
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.section-title {
+  margin: 0 0 15px 0;
+  font-size: 1.1rem;
+  color: #444;
+  font-weight: 600;
+}
+
+/* Form Elements */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-label {
+  font-size: 0.9rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.slider-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  margin: 0 auto;
+  max-width: 900px;
+}
+
+.slider {
+  display: flex;
+  transition: transform 0.5s ease;
+  gap: 20px;
+  padding: 0 20px;
+  height: -moz-fit-content;
+  height: fit-content;
+}
+
+.mini-card {
+  flex: 0 0 calc(100% - 40px);
+  box-sizing: border-box;
+  padding: 25px 45px 25px 45px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  min-width: 0;
+}
+.mini-card__title {
+  text-transform: uppercase;
+  color: var(--color-accent);
+  font-size: clamp(26px, 1.3888888889vw, 20px);
+}
+.mini-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.mini-card__image {
+  height: 200px;
+  width: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-grey-light);
+}
+
+.prev,
+.next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.prev {
+  left: 10px;
+}
+
+.next {
+  right: 10px;
+}
+
+.slider-dots {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+  gap: 8px;
+}
+
+.slider-dot {
+  width: 10px;
+  height: 10px;
+  background: #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.slider-dot.active {
+  background: #333;
+}
+
+.index-page {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 20px 0px 20px 0px;
+  align-items: center;
+}
+.index-page__content {
+  display: flex;
+  flex-direction: row;
+  width: 80%;
+  gap: 15px;
+}
+.index-page__block {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+.index-page__block img {
+  width: 100%;
+  padding: 10px 0px 10px 0px;
+}
+.index-page__block:hover {
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+  transition: 0.4s ease-in-out;
+}
+.index-page__title {
+  text-transform: uppercase;
+  color: var(--color-accent);
+  font-size: 30px;
+}
+.index-page__date {
+  font-size: 25px;
+}
+.index-page__link {
+  display: flex;
+  justify-content: center;
+  font-size: 20px;
+  padding-top: 20px;
+}
+.index-page__link:hover {
+  cursor: pointer;
+}
+
+.greyback {
+  background-color: #f5f5f5;
+}
+
+.main-title {
+  text-transform: uppercase;
+  font-size: 100px;
+  padding: 5px;
 }/*# sourceMappingURL=styles.css.map */

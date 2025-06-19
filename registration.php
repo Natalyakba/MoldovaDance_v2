@@ -14,7 +14,6 @@
         <link rel="stylesheet" href="styles/styles.css">
         <link href="https://fonts.googleapis.com/css?family=Manrope:regular,500,600,700,800&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/font-awesome.min.css">
         <title>Moldova Dancers: Registration</title>
     </head>
     <body>
@@ -115,55 +114,60 @@
         </header>
         
         <main class="main-content">
-
-            <!-- Основной контент страницы -->
-            <!-- Например: -->
             <div class="container">
             <h1 class="h1__title">Registration</h1>
-            <div class="topic">
-                <div class="forma-reg">
-                <h3>Заполните данные для нового пользователя:</h3>
+            <div class="main-content__cards">
 
-                <form action="vendor/user_reg.php" method="post">
-                    <div class="fields">
-                        <input type="text" id="first_name" name="first_name" class="large_input" placeholder="First Name">
-                        <input type="text" id="last_name" name="last_name" class="large_input" placeholder="Last Name">
-                        <input type="email" id="email" name="email" class="large_input" placeholder="Email">
-                        <!-- <input type="" id="" name="" class="large_input" placeholder=""> -->
-                        <input type="text" id="login_user" name="login_user" class="large_input" placeholder="Login">
-                        <input type="date" id="date_of_birth" name="date_of_birth">
-                        <input type="text" id="password" name="password" class="large_input" placeholder="Password">
-                        <input type="text" id="password_confirm" name="password_confirm" class="large_input" placeholder="Repeat Password">
+                <div class="topic">
+                    <h2>Fill fields for new user:</h2>
+                    <form action="vendor/user_reg.php" method="post">
+                        <div class="form-column">
+                            <div class="form-section" style="display:flex; flex-direction: column">
+                                <input type="text" id="first_name" name="first_name" class="large_input" placeholder="First Name">
+                                <input type="text" id="last_name" name="last_name" class="large_input" placeholder="Last Name">
+                                <input type="date" id="date_of_birth" name="date_of_birth">
+                                <input type="text" id="user_city" name="user_city" placeholder="City">
+                            </div>
+                            <div class="form-section" style="display:flex; flex-direction: column">
+                                <input type="email" id="email" name="email" class="large_input" placeholder="Email">
+                                <input type="text" id="password" name="password" class="large_input" placeholder="Password">
+                                <input type="text" id="password_confirm" name="password_confirm" class="large_input" placeholder="Repeat Password">
+                            </div>
+                            <div class="form-section" style="display:flex; flex-direction: column">
+                                <div class="fields">
+
+                                    <button type="submit" class="send">Add</button>
+                                    <button type="reset">Reset</button>
+                                    <div class="msg">
+                                        <?php
+                                            if ($_SESSION['message']){
+                                                echo '<p class="msg"> ' . $_SESSION['message'] . ' </p> ';
+                                            }
+                                            unset($_SESSION['message']);
+                                        ?>
+                                    </div> 
+                                    <div class="two_despite" ><span>Have an account? </span><a href="index.php" class="link_light_to_dark"> Authorization</a></div>
+
+                                </div>
+                            </div>
                         </div>
-                        <div class="two_despite" ><span>Есть аккаунт?</span><a href="index.php" class="link_light_to_dark">Авторизация</a></div>
-                    <div class="fields">
-                        <button type="submit" class="send">Добавить</button>
-                        <button type="reset">Очистить</button>
-                        <div class="msg">
-                            <?php
-                                if ($_SESSION['message']){
-                                    echo '<p class="msg"> ' . $_SESSION['message'] . ' </p> ';
-                                }
-                                unset($_SESSION['message']);
-                            ?>
-                        </div> 
-                    </div>
-                </form>
-                </div>
-                
-            </div>         
+                            
+                        </div>
+                    </form>
+                </div>  
+            </div>      
         </main>
         <div id="modal" class="modal" >
             <div class="modal__content">
                 <div class="modal__header">
                     <span class="modal__title">Authorization</span>
-                    <button id="closeModalBtn" class="modal__close-btn">Close</button>
+                    <button id="closeModalBtn">Close</button>
                 </div>
                 
                 <div class="modal__body">
                     <form action="vendor/sign_in.php" id="loginForm" method="post" class="form">
                         <div class="form__group">
-                            <label for="email" class="form__label">E-mail</label>
+                            <label for="loginEmail" class="form__label">E-mail</label>
                             <input
                                 type="email"
                                 id="loginEmail"
@@ -175,7 +179,7 @@
                             />
                         </div>
                         <div class="form__group">
-                            <label for="password" class="form__label">Password</label>
+                            <label for="loginPassword" class="form__label">Password</label>
                             <input
                                 type="password"
                                 id="loginPassword"

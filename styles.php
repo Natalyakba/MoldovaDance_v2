@@ -2,8 +2,8 @@
     session_start();
     require_once './config/connect.php';
 
-    $style = mysqli_query($connect, "SELECT * FROM `styles`");
-    $style = mysqli_fetch_all($style);
+    // $style = mysqli_query($connect, "SELECT * FROM `styles`");
+    // $style = mysqli_fetch_all($style);
 ?>
 
 <!DOCTYPE html>
@@ -117,23 +117,24 @@
             </div>
         </header>
         
-        
         <main class="main-content">
             <div class="container">
             <!-- Заголовок страницы -->
             <h1 class="h1__title">Styles</h1>
             <div class="main-content__cards">
                 <?php
-                  foreach ($style as $style) {
+                    $styles = mysqli_query($connect, "SELECT * FROM styles");
+                    while ($style = mysqli_fetch_assoc($styles)):
                 ?>
-                <div class="card">
-                    <div class="card__image"><img src="<?= $style[4] ?>"></div>
+                    <div class="card" id="style-<?= $style['id_style'] ?>" style="scroll-margin-top: 100px;"> 
+
+                    <div class="card__image"><img src="<?= $style['image_style'] ?>"></div>
                     <div class="card__content">
-                        <h2 class="cartd__title align-right"><?= $style[1] ?></h2>
-                        <div class="card__text"><?= $style[2] ?></div>
+                        <h2 class="cartd__title align-right"><?= $style['name_style'] ?></h2>
+                        <div class="card__text"><?= $style['about_style'] ?></div>
                         <div class="card__list">
                             <span class="span-accent">Video: </span>
-                            <span class="list--inline"><a href="<?= $style[3] ?>"><?= $style[3] ?></a></span>
+                            <span class="list--inline"><a href="<?= $style['video_style'] ?>"><?= $style['video_style'] ?></a></span>
                         </div>
                         <div class="registration">
                             <button class="button-reg">Dancers & Studios</button>
@@ -142,61 +143,54 @@
                                     <span class="span-accent">Dancers: </span>
                                     <span class="list--inline">
                                     <?php
-                                        $names = mysqli_query($connect, "SELECT dancers.name_dancer
-                                            FROM dancers
-                                            RIGHT JOIN dancer_style on dancers.id_dancer = dancer_style.id_dancer
-                                            RIGHT JOIN styles ON styles.id_style = dancer_style.id_style
-                                            WHERE dancer_style.id_style = $style[0];");
-                                        $names = mysqli_fetch_all($names);
-                                        foreach ($names as $names) {
+                                        $id_style = $style['id_style'];
+                                        $names = mysqli_query($connect, "SELECT d.name_dancer, d.id_dancer
+                                            FROM dancers d
+                                            RIGHT JOIN dancer_style ds on d.id_dancer = ds.id_dancer
+                                            RIGHT JOIN styles s ON s.id_style = ds.id_style
+                                            WHERE ds.id_style = $id_style;");
+                                        while ($name = mysqli_fetch_assoc($names)):
                                     ?>
                                         <span class="list--inline__item">
-                                            <a href="dancers.php#<?= $names[0] ?>"><?= $names[0] ?></a>
+                                            <a href="dancers.php#dancer-<?= $name['id_dancer'] ?>"><?= $name['name_dancer'] ?></a>
                                         </span>
-                                    <?php
-                                        }
-                                    ?>                                      
+                                    <?php endwhile; ?>                                    
+                                     
                                 </div>
                                 <div class="card__list">
                                     <span class="span-accent">Studios: </span>
                                     <span class="list--inline">
                                     <?php
-                                        $studios = mysqli_query($connect, "SELECT studios.name_studio 
-                                            FROM studios 
-                                            RIGHT JOIN studio_style on studios.id_studio = studio_style.id_studio 
-                                            RIGHT JOIN styles ON styles.id_style = studio_style.id_style 
-                                            WHERE studio_style.id_style = $style[0];");
-                                        $studios = mysqli_fetch_all($studios);
-                                        foreach ($studios as $studios) {
+                                        $studios = mysqli_query($connect, "SELECT std.name_studio, std.id_studio 
+                                            FROM studios std
+                                            RIGHT JOIN studio_style ss on std.id_studio = ss.id_studio 
+                                            RIGHT JOIN styles stl ON stl.id_style = ss.id_style 
+                                            WHERE ss.id_style = $id_style");
+                                        while ($studio = mysqli_fetch_assoc($studios)):
                                     ?>
                                         <span class="list--inline__item">
-                                            <a href="studios.php#<?= $studios[0] ?>"><?= $studios[0] ?></a>
+                                            <a href="studios.php#studio-<?= $studio['id_studio'] ?>"><?= $studio['name_studio'] ?></a>
                                         </span>
-                                    <?php
-                                        }
-                                    ?>                                      
+                                    <?php endwhile; ?>                                    
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <?php
-                  }
-                ?>
+                <?php endwhile; ?>
             </div>
         </main>
         <div id="modal" class="modal" >
             <div class="modal__content">
                 <div class="modal__header">
                     <span class="modal__title">Authorization</span>
-                    <button id="closeModalBtn" class="modal__close-btn">Close</button>
+                    <button id="closeModalBtn">Close</button>
                 </div>
                 
                 <div class="modal__body">
                     <form action="vendor/sign_in.php" id="loginForm" method="post" class="form">
                         <div class="form__group">
-                            <label for="email" class="form__label">E-mail</label>
+                            <label for="loginEmail" class="form__label">E-mail</label>
                             <input
                                 type="email"
                                 id="loginEmail"
@@ -208,7 +202,7 @@
                             />
                         </div>
                         <div class="form__group">
-                            <label for="password" class="form__label">Password</label>
+                            <label for="loginPassword" class="form__label">Password</label>
                             <input
                                 type="password"
                                 id="loginPassword"

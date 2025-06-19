@@ -4,6 +4,8 @@
   gap: 20px;
   padding: 35px;
   margin-bottom: 20px;
+  max-width: 900px; // Ограничение по ширине
+  width: 100%; // Занимает всю доступную ширину, но не больше max-width
 
   &:hover {
     img {
@@ -13,20 +15,31 @@
   }
 
   &__image {
-    flex: 0 0 300px; // Фиксированная ширина для контейнера изображения
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    width: 300px;
+    // background-color: var(--color-grey-light);
+    overflow: hidden; /* Это обрежет всё, что выходит за границы */
 
     img {
+      max-height: 100%;
+      max-width: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain; /* Сохраняет пропорции, помещая изображение целиком */
       opacity: 0.8;
-      width: 300px; // Ширина изображения
-      height: auto; // Автоматическая высота для сохранения пропорций
     }
   }
 
   &__content {
     flex: 1;
+    min-width: 0; // Разрешает сжатие контента
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    word-wrap: break-word; // Перенос длинных слов
   }
 
   &__title {
@@ -43,10 +56,11 @@
     margin-bottom: 10px;
   }
 
-  .card__list {
-    display: flex; // Используем flex для выравнивания
-    gap: 10px; // Отступ между элементами
-    margin: 5px;
+  .card__list a {
+    white-space: nowrap; // Запрещаем перенос
+    overflow: hidden; // Обрезаем текст
+    text-overflow: ellipsis; // Добавляем "…"
+    max-width: 250px; // Максимальная ширина
   }
 
   &__link {

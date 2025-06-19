@@ -14,7 +14,6 @@
         <link rel="stylesheet" href="styles/styles.css">
         <link href="https://fonts.googleapis.com/css?family=Manrope:regular,500,600,700,800&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/font-awesome.min.css">
         <title>Moldova Dancers: News</title>
     </head>
     <body>
@@ -115,52 +114,41 @@
         </header>
         
         <main class="main-content">
-    <div class="container">
-        <!-- Заголовок страницы -->
-        <h1 class="h1__title">News</h1>
+            <div class="container">
+                <h1 class="h1__title">News</h1>
 
-        <!-- Список карточек -->
-        <div class="main-content__cards">
-            <?php
-                $news = mysqli_query($connect, "SELECT * FROM news;");
-                $news = mysqli_fetch_all($news);
-                foreach ($news as $news) {
-            ?>
-                <!-- Карточка новости -->
-                <div class="card">
-                    <!-- Фото -->
-                    <div class="card__image">
-                        <img style="width: 300px; opacity: 0.8" src="<?= $news[1] ?>">
-                    </div>
-                    <!-- Контент справа -->
-                    <div class="card__content">
-                        <h2 class="card__title"><?= $news[2] ?></h2>
-                        <p class="card__text"><?= $news[3] ?></p>
-
-
-                        <!-- Ссылка, если она есть -->
-                        <?php if ($news[4]) { ?>
-                            <div class="card__link"><span class="span-accent">Link: </span><a href="<?= $news[4] ?>"><?= $news[4] ?></a></div>
-                        <?php } ?>
-                    </div>
+                <div class="main-content__cards">
+                    <?php
+                        $news = mysqli_query($connect, "SELECT * FROM news;");
+                        while ($item_news = mysqli_fetch_assoc($news)):
+                            ?>
+                            <div class="card">
+                            <div class="card__image">
+                                <img src="<?= $item_news['image_news'] ?>">
+                            </div>
+                            <div class="card__content">
+                                <h2 class="card__title"><?= $item_news['title_news'] ?></h2>
+                                <p class="card__text"><?= $item_news['content_news'] ?></p>
+                                <?php if ($item_news['link_news']) { ?>
+                                    <div class="card__link"><span class="span-accent">Link: </span><a href="<?= $item_news['link_news'] ?>"><?= $item_news['link_news'] ?></a></div>
+                                <?php } ?>
+                            </div>
+                        </div>
+                    <?php endwhile; ?>  
                 </div>
-            <?php
-                }
-            ?>       
-        </div>
-    </div>
-</main>
+            </div>
+        </main>
         <div id="modal" class="modal" >
             <div class="modal__content">
                 <div class="modal__header">
                     <span class="modal__title">Authorization</span>
-                    <button id="closeModalBtn" class="modal__close-btn">Close</button>
+                    <button id="closeModalBtn">Close</button>
                 </div>
                 
                 <div class="modal__body">
                     <form action="vendor/sign_in.php" id="loginForm" method="post" class="form">
                         <div class="form__group">
-                            <label for="email" class="form__label">E-mail</label>
+                            <label for="loginEmail" class="form__label">E-mail</label>
                             <input
                                 type="email"
                                 id="loginEmail"
@@ -172,7 +160,7 @@
                             />
                         </div>
                         <div class="form__group">
-                            <label for="password" class="form__label">Password</label>
+                            <label for="loginPassword" class="form__label">Password</label>
                             <input
                                 type="password"
                                 id="loginPassword"
@@ -188,7 +176,7 @@
                         </div>
                         <button type="submit" class="form__submit-btn">Sign In</button>
                         
-                        <!-- Сообщение об ошибке при авторизации -->
+                        <!-- Error-->
                         <?php
                             if ($_SESSION['message']){
                                 echo '<p class="form__message"> ' . $_SESSION['message'] . ' </p> ';
@@ -202,7 +190,7 @@
         <footer class="footer">
             <div class="container">
                 <div class="footer__body">
-                    <!-- Секция контактов -->
+                    <!-- Contacts -->
                     <div class="footer__section footer__section--contacts">
                         <h3 class="footer__title">Contact Us</h3>
                         <ul class="footer__list">
@@ -221,7 +209,7 @@
                         </ul>
                     </div>
 
-                    <!-- Секция навигации -->
+                    <!-- Navigation -->
                     <div class="footer__section footer__section--navigation">
                         <h3 class="footer__title">Quick Links</h3>
                         <ul class="footer__list">
@@ -240,7 +228,7 @@
                         </ul>
                     </div>
 
-                    <!-- Секция соцсетей -->
+                    <!-- Social networks -->
                     <div class="footer__section footer__section--social">
                         <h3 class="footer__title">Follow Us</h3>
                         <ul class="footer__list footer__list--social">
@@ -263,7 +251,7 @@
                     </div>
                 </div>
 
-                <!-- Секция копирайта -->
+                <!-- copyright -->
                 <div class="footer__copyright">
                     <p class="footer__copyright-text">
                         &copy; 2025 Moldova Dance. All rights reserved.

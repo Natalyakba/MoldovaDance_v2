@@ -5,11 +5,11 @@
     $id_dancer = isset($_GET['id']) ? $_GET['id'] : null;
 
     if ($id_dancer != null) {
-    $dancer = mysqli_query($connect, "SELECT * FROM dancers WHERE id_dancer = '$id_dancer'");
-    $dancer = mysqli_fetch_all($dancer);
+        $dancer = mysqli_query($connect, "SELECT * FROM dancers WHERE id_dancer = '$id_dancer'");
+        $dancer = mysqli_fetch_all($dancer);
     } else {
-    $dancer = mysqli_query($connect, "SELECT * FROM dancers");
-    $dancer = mysqli_fetch_all($dancer);
+        $dancer = mysqli_query($connect, "SELECT * FROM dancers");
+        $dancer = mysqli_fetch_all($dancer);
     }
 ?>
 
@@ -24,7 +24,6 @@
         <link rel="stylesheet" href="styles/styles.css">
         <link href="https://fonts.googleapis.com/css?family=Manrope:regular,500,600,700,800&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/font-awesome.min.css">
         <title>Moldova Dancers: dancers</title>
     </head>
     <body>
@@ -123,107 +122,107 @@
                 </div>
             </div>
         </header>
-        
-        
+         
         <main class="main-content">
             <div class="container">
                 <!-- Заголовок страницы -->
                 <h1 class="h1__title">Dancers</h1>
-                <?php
-                  foreach ($dancer as $dancer) {
-                ?>
-                
-                    <div class="card">
-                        <div class="card__image">
-                            <img src="<?= $dancer[3] ?>">
-                        </div>
-                        <div class="card__content">
-                            <h2 class="card__title"><?= $dancer[1] ?></h2>
-                            <?php
-                                $city = mysqli_query($connect, "SELECT cities.name_city 
-                                FROM cities 
-                                JOIN dancers ON cities.id_city = dancers.city_dancer
-                                WHERE dancers.id_dancer = '$dancer[0]'");
-                                $city = mysqli_fetch_array($city);
-                            ?>
-                            <h3 class="card__city align-right"><?= htmlspecialchars($city[0]) ?></h3>
-                            <div class="card__text">
-                            <?= htmlspecialchars($dancer[5]) ?>
+                <div class="main-content__cards">
+                    <?php foreach ($dancer as $dancer) { ?>                  
+                        <div class="card" id="dancer-<?= $dancer[0] ?>" style="scroll-margin-top: 100px;"> 
+
+                            <div class="card__image">
+                                <?php if ($dancer[3] == NULL) { ?>
+                                <img src="https://cdn.pixabay.com/photo/2017/07/18/23/23/user-2517433_1280.png">
+                                <?php 
+                                } else { ?>
+                                <img src="<?= $dancer[3] ?>">
+                                <?php } ?>
                             </div>
-                            <div class="card__list">
-                                <span class="span-accent">Style: </span>
-                                <span class="list--inline">
-                                    <?php
-                                        $styles = mysqli_query($connect, "SELECT styles.name_style 
-                                            FROM styles 
-                                            RIGHT JOIN dancer_style 
-                                            ON styles.id_style = dancer_style.id_style 
-                                            RIGHT JOIN dancers 
-                                            ON dancers.id_dancer = dancer_style.id_dancer 
-                                            WHERE dancer_style.id_dancer = $dancer[0];");
-                                        $styles = mysqli_fetch_all($styles);
-                                        foreach ($styles as $style) {
-                                    ?>
-                                        <span class="list--inline__item">
-                                            <a href="styles.php#<?= htmlspecialchars($style[0]) ?>"><?= htmlspecialchars($style[0]) ?></a>
-                                        </span>                                
-                                    <?php
-                                        }
-                                    ?>
-                                </span>
-                            </div>
-                            <?php
-                                $team = mysqli_query($connect, "SELECT teams.name_team
-                                    FROM dancers
-                                    JOIN dancer_team ON dancers.id_dancer = dancer_team.id_dancer
-                                    JOIN teams ON dancer_team.id_team = teams.id_team
+                            <div class="card__content">
+                                <h2 class="card__title"><?= $dancer[1] ?></h2>
+                                <?php
+                                    $city = mysqli_query($connect, "SELECT cities.name_city 
+                                    FROM cities 
+                                    JOIN dancers ON cities.id_city = dancers.city_dancer
                                     WHERE dancers.id_dancer = '$dancer[0]'");
-                                $team = mysqli_fetch_all($team);
-                                if ($team) {
-                                    foreach ($team as $team_member) {
-                            ?>
+                                    $city = mysqli_fetch_array($city);
+                                ?>
+                                <h3 class="card__city align-right"><?= htmlspecialchars($city[0]) ?></h3>
+                                <div class="card__text">
+                                    <?= htmlspecialchars($dancer[5]) ?>
+                                </div>
                                 <div class="card__list">
-                                    <span class="span-accent">Team: </span>
+                                    <span class="span-accent">Style: </span>
                                     <span class="list--inline">
+                                        <?php
+                                            $styles = mysqli_query($connect, "SELECT stl.name_style, stl.id_style 
+                                                FROM styles stl
+                                                RIGHT JOIN dancer_style ds
+                                                ON stl.id_style = ds.id_style 
+                                                RIGHT JOIN dancers d
+                                                ON d.id_dancer = ds.id_dancer 
+                                                WHERE ds.id_dancer = $dancer[0];");
+                                            while ($style = mysqli_fetch_assoc($styles)):
+                                    ?>
                                         <span class="list--inline__item">
-                                        <a href="teams.php#<?= htmlspecialchars($team_member[0]) ?>"><?= htmlspecialchars($team_member[0]) ?></a>
-                                        </span>   
+                                            <a href="styles.php#style-<?= $style['id_style'] ?>"><?= $style['name_style'] ?></a>
+                                        </span>
+                                    <?php endwhile; ?>  
                                     </span>
                                 </div>
-                            <?php
+                                <?php
+                                    $team = mysqli_query($connect, "SELECT teams.name_team
+                                        FROM dancers
+                                        JOIN dancer_team ON dancers.id_dancer = dancer_team.id_dancer
+                                        JOIN teams ON dancer_team.id_team = teams.id_team
+                                        WHERE dancers.id_dancer = '$dancer[0]'");
+                                    $team = mysqli_fetch_all($team);
+                                    if ($team) {
+                                        foreach ($team as $team_member) {
+                                ?>
+                                    <div class="card__list">
+                                        <span class="span-accent">Team: </span>
+                                        <span class="list--inline">
+                                            <span class="list--inline__item">
+                                            <a href="teams.php#<?= htmlspecialchars($team_member[0]) ?>"><?= htmlspecialchars($team_member[0]) ?></a>
+                                            </span>   
+                                        </span>
+                                    </div>
+                                <?php
+                                        }
                                     }
-                                }
-                            ?>
-                        
-                            <div class="card__list">
-                                <span class="span-accent">Contact: </span>
-                                <span class="list--inline">
-                                    
-                                    <span class="list--inline__item">
-                                        <a href="<?= htmlspecialchars($dancer[4]) ?>"><?= htmlspecialchars($dancer[4]) ?></a>
+                                ?>
+                            
+                                <div class="card__list">
+                                    <span class="span-accent">Contact: </span>
+                                    <span class="list--inline" >
+                                        
+                                        <span class="list--inline__item"  >
+                                            <a href="<?= htmlspecialchars($dancer[4]) ?>"><?= htmlspecialchars($dancer[4]) ?></a>
+                                        </span>
+                                        
                                     </span>
-                                    
-                                </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                
-                <?php
-                  }
-                ?>
+                    
+                    <?php } ?>
+                </div>
             </div>
         </main>
+
         <div id="modal" class="modal" >
             <div class="modal__content">
                 <div class="modal__header">
                     <span class="modal__title">Authorization</span>
-                    <button id="closeModalBtn" class="modal__close-btn">Close</button>
+                    <button id="closeModalBtn">Close</button>
                 </div>
                 
                 <div class="modal__body">
                     <form action="vendor/sign_in.php" id="loginForm" method="post" class="form">
                         <div class="form__group">
-                            <label for="email" class="form__label">E-mail</label>
+                            <label for="loginEmail" class="form__label">E-mail</label>
                             <input
                                 type="email"
                                 id="loginEmail"
@@ -235,7 +234,7 @@
                             />
                         </div>
                         <div class="form__group">
-                            <label for="password" class="form__label">Password</label>
+                            <label for="loginPassword" class="form__label">Password</label>
                             <input
                                 type="password"
                                 id="loginPassword"
@@ -262,6 +261,7 @@
                 </div>
             </div>
         </div>
+
         <footer class="footer">
             <div class="container">
                 <div class="footer__body">
@@ -334,6 +334,7 @@
                 </div>
             </div>
         </footer>
+
         <script src="js/script.js"></script>
     </body>
 </html>

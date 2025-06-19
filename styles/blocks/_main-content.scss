@@ -13,4 +13,10 @@
     align-items: center;
     gap: 20px;
   }
+
+  &__index {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
 }

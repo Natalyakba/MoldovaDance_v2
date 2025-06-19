@@ -14,7 +14,6 @@
         <link rel="stylesheet" href="styles/styles.css">
         <link href="https://fonts.googleapis.com/css?family=Manrope:regular,500,600,700,800&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/font-awesome.min.css">
         <title>Moldova Dancers</title>
     </head>
     <body>
@@ -116,26 +115,149 @@
         <section class="hero">
         <img src="img/main_image.png" alt="main_image" class="hero__image">
         </section>
-        <main class="main-content">
+        <main class="main-content__index">
 
-            <!-- Основной контент страницы -->
-            <!-- Например: -->
-            <div class="container">
-            <h1>Welcome to Moldova Dance</h1>
-            <p>This is the main content of the page.</p>
+            <div class="index-page">
+                <div class="index-page__content">
+                    <div class="index-page__block" style="width: 50%;">
+                        <div class="main-title">Coming soon</div>
+                        <img src="https://i.ibb.co/4gRk0Bnp/image-3.png" alt="dancers_girls">
+                        <h2 class="index-page__title">Dance Convention</h2>
+                        <div class="index-page__date">August, 16</div>
+                    </div>
+                    <div class="index-page__block">
+                        <h2 class="index-page__title" style="text-align: end">First Championship</h2>
+                        <div class="index-page__date" style="text-align: end">Juny, 16</div>
+                        <img src="https://i.ibb.co/WvGQM2hd/image-2.png" alt="dancer-girl">
+                    </div>
+                </div>
+                <a class="index-page__link" href="events.php">more events -></a>
             </div>
+            <div class="index-page greyback">
+                <div class="main-title" style="text-align: center;">news</div>
+                <div class="index-page__content" style="flex-direction: column; ">
+                    <div class="index-page__block" style="flex-direction: row; gap: 30px;">
+                        <div class="div">
+                            <img src="img/news_1.png" style="width: 350px" alt="dancers_girls">
+                        </div>                       
+                        <div class="div">
+                            <h2 class="index-page__title" style="text-align: end">SPACE VISION [September, 17]</h2>
+                            <div class="index-page__text">We have great news! 🌟 On Sunday at 20:30 the most grandiose concert in Moldova
+                                 will be broadcast - “SPACE VISION” on @gurinel_tv. This is a concert in which all the groups
+                                  in our studio participated, from talented beginners to real professionals! Don't miss this unique
+                                   chance to see the most talented people in the country! Sit back, invite your family and spend time with us.</div>
+                        </div>              
+                    </div>
+                    <div class="index-page__block" style="flex-direction: row; gap: 30px;">
+                        <div class="div">
+                            <img src="img/news_2.png" style="width: 350px" alt="dancers_girls">
+                        </div>                       
+                        <div class="div">
+                            <h2 class="index-page__title" style="text-align: end">STRIP Convention</h2>
+                            <div class="index-page__text">What is the High Heels - Strip Convention?
+                This is first and foremost a place where everyone can be themselves. A place where everyone manifests themselves as they wish.
+                A place of heels, beautiful dancing and incredible energy
+                And secondly, this is a place of growth. Not only dance, but also personal! After 
+                the convention you will definitely not be the same again. We bring you only 
+                the best teachers and personalities who will make this convention incredible.</div>
+                        </div>              
+                    </div>
+                    <div class="index-page__block" style="flex-direction: row; gap: 30px;">
+                        <div class="div">
+                            <img src="img/news_3.png" style="width: 350px" alt="dancers_girls">
+                        </div>                       
+                        <div class="div">
+                            <h2 class="index-page__title" style="text-align: end">R.a.r. Team</h2>
+                            <div class="index-page__text">We went to @worldofdance_france in February with two teams and this was our first experience of this scale 🤩 Here are our first favorites: RAR adults X Bumblebi. Together we took 4th place: 87/100 points (1st place – 89 points). We are taking confident steps to the global level. And we're not going to stop. And don’t forget about RAR juniors - KINDER GARDEN 👶🏼👧🧒🏻 They were even invited to America for the championship finals🇺🇸 We hope to go next year. Therefore, if you want to become our SPONSORS, we will be very glad. We feel so happy and motivated to keep working! Expect further criticism from us.</div>
+                        </div>              
+                    </div>
+                </div>
+                <a class="index-page__link" href="news.php">more news -></a>
+            </div>
+            <div class="index-page">
+                <div class="index-page__content">
+                    <div class="index-page__block" style="width: 50%;">
+                        
+                        <h2 class="index-page__title" style="text-align: center;">MOLDOVA DANCE</h2>
+                        <div class="index-page__text">
+                            is an information dance community of Moldova. Here we announce the events of the republic
+                            and neighboring countries: competitions, 
+                            classes, intensives, castings. We will introduce
+                            you to our best dancers, teachers and studios.</div>
+                        <img src="img/about_1.jpg" alt="about_girls">
+                    </div>
+                    <div class="index-page__block" style="width: 50%;">
+                        <div class="main-title">about us</div>
+                        <img src="img/about_2.png" style="width: 350px" alt="logo_md">
+                    </div>
+                </div>
+                <a class="index-page__link" href="events.php">more events -></a>
+            </div>
+            <div class="index-page greyback">
+                <div class="main-title" style="text-align: center;">FORMATIONS</div>
+                <div class="index-page__content">
+                    <div class="index-page__block" style="width: 50%;">
+                        <img src="img/teams_1.png" style="height: 500px;
+    width: fit-content;" alt="team_1">
+                        <h2 class="index-page__title">COBRAS TEAM</h2>
+                        <a class="index-page__link" href="teams.php">more info -></a>
+                    </div>
+                    <div class="index-page__block" style="width: 50%;">
+                        <img src="img/teams_2.png" alt="team_2">
+                        <h2 class="index-page__title">KINJAZ CREWn</h2>
+                        <a class="index-page__link" href="teams.php">more info-></a>
+                    </div>
+                </div>
+                <a class="index-page__link" href="teams.php">more teams -></a>
+            </div>
+            <div class="index-page">
+                <div class="index-page__content">
+                    <div class="main-title" style="text-align: center; writing-mode: vertical-rl; transform: scale(-1)">articles</div>
+                    <div class="index-page__block" style="width: 50%;">
+                        <h2 class="index-page__title" style="text-align: center; ">SOME THEORIES OF DANCE IN CONTEMPORARY SOCIETY</h2>
+                        <div class="index-page__text">
+                            What “counts” as philosophy is a perennial issue that has been debated both within and outside of the American Philosophical 
+                            Association. Is interdisciplinary philosophy that incorporates not just insights from other fields but their methods, commitments, 
+                            and forms of discourse still “philosophy”?
+                            This article assumes that it is, holding that a philosophy of something can make recourse to conversations and practices in 
+                            all the domains that are relevant to what it is of (in this case dance) so long as doing so aids our thinking about the 
+                            meaning of that domain. “Philosophy” is thus construed broadly here in keeping with how the term is used in the 
+                            rapidly growing field of the philosophy of dance. The potential for dance philosophy is enormous, in part because dance 
+                            itself is multifaceted enough to make it connect with many branches of philosophy. Indeed, dance has been practiced 
+                            throughout history for artistic, educational, therapeutic, social, political, religious and other purposes.</div>
+                    </div>
+                    <div class="index-page__block" style="width: 50%;">
+                        <h2 class="index-page__title" style="text-align: center;">THE PHILOSOPHY OF DANCE</h2>
+                        <div class="index-page__text">
+                            T. S. Eliot has claimed that ballet is valuablebecause it has unconsciously concerned itself with a permanent form! 
+                            The majority of intellectuals agree with him in feeling that whatever ballet, or dance generally, has achieved is
+                             the result of intuitively sound construction on the part of a few naturally gifted, but uncultivated, individuals.
+                             That practical accomplishments in dance have been largely independent of serious theoretical formulations can
+                              hardly be denied by those who have seen the rhapsodic effusions of recent dance "criticism." How-ever, philosophical
+                               discussions of the art do exist, and they may yet be influential if attention is called to their significance. 
+                               Among the contemporary writers some have chosen to diseuss dance by locating their subject matter in the field of 
+                               the social sciences. Rather than considering the art as an isolated phenomenon, they hold that it may be most 
+                               profitably illuminated when viewed in a context not specifically aesthetic. Yet their conclusions are aesthetic, 
+                               not sociological. These men are primarily concerned with the nature of an art form; with the process of its creation, 
+                               the relationships of its parts, and the sources of its effectiveness.</div>
+                    </div>
+                </div>
+                <a class="index-page__link" href="teams.php">more articles -></a>
+
+            </div>
+        
         </main>
         <div id="modal" class="modal" >
             <div class="modal__content">
                 <div class="modal__header">
                     <span class="modal__title">Authorization</span>
-                    <button id="closeModalBtn" class="modal__close-btn">Close</button>
+                    <button id="closeModalBtn">Close</button>
                 </div>
                 
                 <div class="modal__body">
                     <form action="vendor/sign_in.php" id="loginForm" method="post" class="form">
                         <div class="form__group">
-                            <label for="email" class="form__label">E-mail</label>
+                            <label for="loginEmail" class="form__label">E-mail</label>
                             <input
                                 type="email"
                                 id="loginEmail"
@@ -147,7 +269,7 @@
                             />
                         </div>
                         <div class="form__group">
-                            <label for="password" class="form__label">Password</label>
+                            <label for="loginPassword" class="form__label">Password</label>
                             <input
                                 type="password"
                                 id="loginPassword"

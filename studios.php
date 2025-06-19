@@ -20,6 +20,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/font-awesome.min.css">
         <title>Moldova Dancers: studios</title>
     </head>
+
     <body>
         <header class="header">
             <div class="container">
@@ -125,16 +126,19 @@
                 <?php
                   foreach ($content as $content) {
                 ?>
-                <div class="card">
-                    <div class="card__image"><img src="<?= $content[2] ?>"></div>
+                <div class="card" id="studio-<?= $content[0] ?>" style="scroll-margin-top: 100px;"> 
+
+                    <div class="card__image">
+                        <img src="<?= !empty($content[2]) ? htmlspecialchars($content[2]) : 'https://cdn.pixabay.com/photo/2017/07/18/23/23/user-2517433_1280.png' ?>" alt="Event image">
+                    </div>
                     <div class="card__content">
                         <h2 class="cartd__title align-right"><?= $content[1] ?></h2>
                         <h3 class="card__city align-right">
                         <?php
                             $city = mysqli_query($connect, "SELECT cities.name_city 
-                                FROM cities 
-                                JOIN dancers ON cities.id_city = dancers.city_dancer
-                                where dancers.id_dancer = '$content[0]'");
+                                                            FROM cities 
+                                                            JOIN dancers ON cities.id_city = dancers.city_dancer
+                                                            where dancers.id_dancer = '$content[0]'");
                             $city = mysqli_fetch_array($city);
                         ?>
                         <?= $city[0] ?>
@@ -149,10 +153,10 @@
                             </div>
                         <?php
                             }
-                            $dancer = mysqli_query($connect, "SELECT dancers.name_dancer FROM dancers
-                                JOIN dancer_studio
-                                ON dancers.id_dancer = dancer_studio.id_dancer
-                                WHERE dancer_studio.id_studio = '$content[0]';");
+                            $dancer = mysqli_query($connect, "SELECT d.name_dancer, d.id_dancer FROM dancers d
+                                                            JOIN dancer_studio ds
+                                                            ON d.id_dancer = ds.id_dancer
+                                                            WHERE ds.id_studio = '$content[0]';");
                             $dancer = mysqli_fetch_all($dancer);
                             if ($dancer) { 
                         ?>
@@ -161,7 +165,7 @@
                                 <?php
                                     foreach ($dancer as $dancer) {
                                 ?>
-                                    <span class="list--inline"><a href="dancers.php#<?= $dancer[0] ?>"><?= $dancer[0] ?></a></span>
+                                    <span class="list--inline"><a href="dancers.php#dancer-<?= $dancer[1] ?>"><?= $dancer[0] ?></a></span>
                                 <?php
                                     } 
                                 ?>
@@ -186,13 +190,13 @@
             <div class="modal__content">
                 <div class="modal__header">
                     <span class="modal__title">Authorization</span>
-                    <button id="closeModalBtn" class="modal__close-btn">Close</button>
+                    <button id="closeModalBtn">Close</button>
                 </div>
                 
                 <div class="modal__body">
                     <form action="vendor/sign_in.php" id="loginForm" method="post" class="form">
                         <div class="form__group">
-                            <label for="email" class="form__label">E-mail</label>
+                            <label for="loginEmail" class="form__label">E-mail</label>
                             <input
                                 type="email"
                                 id="loginEmail"
@@ -204,7 +208,7 @@
                             />
                         </div>
                         <div class="form__group">
-                            <label for="password" class="form__label">Password</label>
+                            <label for="loginPassword" class="form__label">Password</label>
                             <input
                                 type="password"
                                 id="loginPassword"

@@ -2,13 +2,10 @@
     session_start();
     require_once './config/connect.php';
 
-    $topic = mysqli_query($connect, "SELECT * FROM `topics`ORDER BY id_topic DESC");
+    $topic = mysqli_query($connect, "SELECT * FROM topics");
     $topic = mysqli_fetch_all($topic);
-
     $today = date("F j, Y, g:i a");
-
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +18,6 @@
         <link rel="stylesheet" href="styles/styles.css">
         <link href="https://fonts.googleapis.com/css?family=Manrope:regular,500,600,700,800&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/font-awesome.min.css">
         <title>Moldova Dancers: Forum</title>
     </head>
     <body>
@@ -125,92 +121,155 @@
             <div class="container">
                 <h1 class="h1__title">Forum</h1>
 
-                <!-- Форма для создания темы -->
                 <div class="propose">
-                <button class="propose__button">Suggest a topic for discussion</button>
-                <div class="propose__form topic">
-                    <form class="form" action="vendor/create_theme.php" method="post">
-                    <input class="form__input" type="text" name="name_theme" placeholder="Name of your theme">
-                    <textarea class="form__textarea" name="theme_comment" placeholder="Explain why this topic is relevant"></textarea>
-                    <div class="form__actions">
-                        <button class="button button--submit" type="submit">Send an offer</button>
+                    <button class="propose__button">Suggest a topic for discussion</button>
+                    <div class="propose__form topic">
+                        <form class="form" action="vendor/create_theme.php" method="post">
+                        <input class="form__input" type="text" name="name_theme" placeholder="Name of your theme">
+                        <textarea class="form__textarea" name="theme_comment" placeholder="Explain why this topic is relevant"></textarea>
+                        <div class="form__actions">
+                            <button class="button button--submit" type="submit">Send an offer</button>
+                        </div>
+                        </form>
                     </div>
-                    </form>
-                </div>
                 </div>
 
-                <!-- Список тем -->
                 <?php foreach ($topic as $topic) { ?>
-                <div class="topic">
-                    <div class="topic__head">
-                    <span class="topic__title"><?= $topic[1] ?></span>
-                    <span class="topic__date"><?= $topic[3] ?></span>
+                    <div class="topic" id="topic_<?= $topic[0] ?>">
+
+                        <div class="topic__head">
+                            <span class="topic__title"><?= $topic[1] ?></span>
+                            <span class="topic__date"><?= $topic[3] ?></span>
+                        </div>
+                        
+                        <div class="topic__content">                          
+                            <div class="topic__text"><?= $topic[2] ?></div>   
+                            <div class="topic__buttons">
+                                <?php
+                                    $num_of_comments_query = mysqli_query($connect, "SELECT COUNT(c.id_comment) AS count FROM comments c
+                                                                                    WHERE c.id_topic = $topic[0]");
+                                    $num_of_comments = mysqli_fetch_assoc($num_of_comments_query);
+                                    $num_of_reviews_query = mysqli_query($connect, "SELECT COUNT(er.id) as count
+                                                                                    from event_ratings er
+                                                                                    JOIN events e on er.id_event = e.id_event
+                                                                                    join topics t on e.id_event = t.id_event
+                                                                                    where t.id_topic = $topic[0]");
+                                    $num_of_reviews = mysqli_fetch_assoc($num_of_reviews_query);
+                                    $isEvent = mysqli_query($connect, "SELECT id_event from topics where id_topic = $topic[0]");
+                                    $isEvent = mysqli_fetch_assoc($isEvent);
+                                    $avgRating = mysqli_query($connect, "SELECT ROUND(AVG(er.rating), 1) as result from event_ratings er 
+                                                                            JOIN events e on er.id_event = e.id_event
+                                                                            join topics t on e.id_event = t.id_event
+                                                                            where t.id_topic = $topic[0]");
+                                    $avgRating = mysqli_fetch_assoc($avgRating);
+                                    
+                                ?>
+                                <button class="button comments__toggle">Show Comments (<?= $num_of_comments['count'] ?>) 
+                                <?php 
+                                    if ($isEvent['id_event'] != NULL) {?>
+                                    
+                                    / Rating <?= $avgRating['result'] ?> ⭐ (<?= $num_of_reviews['count']?>)
+                                    <?php } ?>
+                            
+                            </button>
+                                
+                                <button class="button">Add comment</button>
+                                <?php if ($topic[4]){ ?>
+                                    <button class="event-btn" data-id="<?= $topic[4] ?>">Show info</button>
+                                <?php } ?>
+                            </div>  
+                        </div>  
+
+                        <div class="comments">
+                            <div class="comments__have">
+                                <?php
+                                    $comment = mysqli_query($connect, "SELECT comments.id_comment, comments.content_comment, comments.date_comment
+                                                                    FROM comments 
+                                                                    JOIN topics ON comments.id_topic = topics.id_topic
+                                                                    WHERE topics.id_topic = $topic[0]");
+                                    $comment = mysqli_fetch_all($comment);
+
+                                    foreach ($comment as $comment) {
+                                ?>
+                                    <div class="comment">
+                                        <div class="comment__meta">                                   
+                                            <?php
+                                                $author_of_comment = mysqli_query($connect, "SELECT u.login_user
+                                                                                            FROM users u
+                                                                                            JOIN comments c
+                                                                                            ON u.id_user = c.id_user
+                                                                                            WHERE c.id_comment = $comment[0]
+                                                                                            ");
+                                                $author_of_comment = mysqli_fetch_assoc($author_of_comment);
+                                            ?>
+                                            <span class="comment__author"><?= $author_of_comment['login_user'] ?></span>
+                                            <span class="comment__date"><?= $comment[2] ?></span>
+                                        </div>
+                                        <div class="comment__body"><?= $comment[1] ?></div>
+                                    </div>
+                                <?php } ?>
+
+                                <?php
+                                    
+                                    $reviews_result = mysqli_query($connect, "SELECT u.login_user, er.rating, er.comment, er.created_at
+                                    from event_ratings er
+                                    JOIN users u on er.id_user = u.id_user
+                                    join events e on er.id_event = e.id_event
+                                    join topics t on e.id_event = t.id_event
+                                    where t.id_topic = $topic[0];");
+                                    while ($review = mysqli_fetch_assoc($reviews_result)) {
+                                    ?>
+                                        <div class="comment">
+                                            <div class="comment__meta">                                   
+                                                <span class="comment__author"><?= $review['login_user'] ?></span>
+                                                <span class="comment__date"><?= $review['created_at'] ?></span>
+                                            </div>
+                                            <div class="comment__body">⭐ <?= $review['rating'] ?>: <?= $review['comment'] ?></div>
+                                        </div>
+                                    <?php } ?>
+
+                                
+                            </div>
+
+                            <!-- Форма для добавления комментария -->
+                            <div class="comments__add" data-user="<?= isset($_SESSION['user']) ? 'true' : 'false' ?>">
+                                <div class="comments__form" style="display: none;">
+                                    <form class="form" action="vendor/create_com.php" method="post">
+                                        <input type="hidden" name="date_comment" value="<?= $today ?>">
+                                        <input type="hidden" name="id_topic" value="<?= $topic[0] ?>">
+                                        <input type="hidden" name="id_user" value="<?= $_SESSION['user']['id_user'] ?>">
+
+                                        <?php if ($_SESSION['user']) { ?>
+                                            <input class="form__input" type="text" name="login_user" value="<?= $_SESSION['user']['login_user'] ?>" readonly>
+                                        <?php } else { ?>
+                                            <input class="form__input" type="text" name="login_user" placeholder="Name">
+                                        <?php } ?>
+                                        
+                                        <textarea class="form__textarea" name="content_comment" placeholder="Enter your comment"></textarea>
+                                        <div class="form__actions">
+                                            <button class="button" type="submit">Send comment</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div> 
+                         
                     </div>
-
-                    <div class="topic__content">
-                    <div class="topic__text"><?= $topic[2] ?></div>
-
-                    <!-- Список комментариев -->
-                    <div class="comments">
-                        <button class="button">Show Comments</button>
-                        <div class="comments__have">
-                        <?php
-                            $comment = mysqli_query($connect, "SELECT comments.id_comment, comments.author_comment, comments.content_comment, comments.date_comment
-                                                            FROM comments 
-                                                            JOIN topics ON comments.id_topic = topics.id_topic
-                                                            WHERE topics.id_topic = $topic[0]");
-                            $comment = mysqli_fetch_all($comment);
-                            foreach ($comment as $comment) {
-                        ?>
-                            <div class="comment">
-                            <div class="comment__meta">
-                                <span class="comment__author"><?= $comment[1] ?></span>
-                                <span class="comment__date"><?= $comment[3] ?></span>
-                            </div>
-                            <div class="comment__body"><?= $comment[2] ?></div>
-                            </div>
-                        <?php } ?>
-                        </div>
-
-                        <!-- Форма для добавления комментария -->
-                        <div class="comments__add" data-user="<?= isset($_SESSION['user']) ? 'true' : 'false' ?>">
-                        <button class="button">Add comment</button>
-                        <div class="comments__form" style="display: none;">
-                            <form class="form" action="vendor/create_com.php" method="post">
-                            <input type="hidden" name="date_comment" value="<?= $today ?>">
-                            <input type="hidden" name="id_topic" value="<?= $topic[0] ?>">
-                            
-                            <?php if ($_SESSION['user']) { ?>
-                                <input class="form__input" type="text" name="author_comment" value="<?= $_SESSION['user']['login_user'] ?>" readonly>
-                            <?php } else { ?>
-                                <input class="form__input" type="text" name="author_comment" placeholder="Name">
-                            <?php } ?>
-                            
-                            <textarea class="form__textarea" name="content_comment" placeholder="Enter your comment"></textarea>
-                            <div class="form__actions">
-                                <button class="button" type="submit">Send comment</button>
-                            </div>
-                            </form>
-                        </div>
-                        </div>
-                    </div> <!-- Закрываем comments -->
-                    </div> <!-- Закрываем topic__content -->
-                </div> <!-- Закрываем topic -->
                 <?php } ?>
-            </div> <!-- Закрываем container -->
-        </main> <!-- Закрываем main-content -->
+            </div> 
+        </main> 
 
         <div id="modal" class="modal" >
             <div class="modal__content">
                 <div class="modal__header">
                     <span class="modal__title">Authorization</span>
-                    <button id="closeModalBtn" class="modal__close-btn">Close</button>
+                    <button id="closeModalBtn">Close</button>
                 </div>
                 
                 <div class="modal__body">
                     <form action="vendor/sign_in.php" id="loginForm" method="post" class="form">
                         <div class="form__group">
-                            <label for="email" class="form__label">E-mail</label>
+                            <label for="loginEmail" class="form__label">E-mail</label>
                             <input
                                 type="email"
                                 id="loginEmail"
@@ -222,7 +281,7 @@
                             />
                         </div>
                         <div class="form__group">
-                            <label for="password" class="form__label">Password</label>
+                            <label for="loginPassword" class="form__label">Password</label>
                             <input
                                 type="password"
                                 id="loginPassword"
@@ -322,8 +381,68 @@
                 </div>
             </div>
         </footer>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Переключение видимости комментариев
+                document.querySelectorAll(".comments__toggle").forEach(function (toggleBtn) {
+                    toggleBtn.addEventListener("click", function () {
+                        const commentsContainer = this.closest(".topic").querySelector(".comments__have");
+                        if (commentsContainer) {
+                            commentsContainer.style.display = 
+                                commentsContainer.style.display === "none" || commentsContainer.style.display === ""
+                                ? "block"
+                                : "none";
+                        }
+                    });
+                });
+
+                // Показ формы добавления комментария
+                document.querySelectorAll(".topic .button:nth-child(2)").forEach(function (addCommentBtn) {
+                    addCommentBtn.addEventListener("click", function () {
+                        const commentForm = this.closest(".topic").querySelector(".comments__form");
+                        if (commentForm) {
+                            commentForm.style.display = 
+                                commentForm.style.display === "none" || commentForm.style.display === ""
+                                ? "block"
+                                : "none";
+                        }
+                    });
+                });
+
+                // Переход по кнопке Show Info
+                document.querySelectorAll(".event-btn").forEach(function (btn) {
+                    btn.addEventListener("click", function () {
+                        const eventId = this.dataset.id;
+                        if (eventId) {
+                            // Перейти на страницу info, например: event_info.php?id=...
+                            window.location.href = `events.php#event-${eventId}`;
+                        }
+                    });
+                });
+
+                // Закрытие модального окна (если понадобится)
+                const modal = document.getElementById("modal");
+                const closeModalBtn = document.getElementById("closeModalBtn");
+                if (closeModalBtn) {
+                    closeModalBtn.addEventListener("click", () => {
+                        modal.style.display = "none";
+                    });
+                }
+
+                // Если нужно открыть модальное окно
+                const openModalBtn = document.getElementById("openModalBtn");
+                if (openModalBtn) {
+                    openModalBtn.addEventListener("click", () => {
+                        modal.style.display = "block";
+                    });
+                }
+            });
+
+        </script>
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="js/script.js"></script>
+
         
     </body>
 </html>

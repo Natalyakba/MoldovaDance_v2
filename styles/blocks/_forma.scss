@@ -37,15 +37,10 @@
 /* Элемент form__submit-btn */
 .form__submit-btn {
   padding: 10px 20px;
-  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
   font-size: 1rem;
   cursor: pointer;
   margin-top: 10px; /* Отступ сверху */
-}
-
-.form__submit-btn:hover {
-  background-color: #0056b3; /* Изменение цвета при наведении */
 }

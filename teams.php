@@ -127,7 +127,8 @@
                         foreach ($team as $team) {
                     ?>
                        
-                            <div class="card">
+                            <div class="card" id="team-<?= $team[0] ?>" style="scroll-margin-top: 100px;"> 
+                            
                                 <div class="card__image">
                                     <img src="<?= $team[2]  ?>">
                                 </div>
@@ -148,33 +149,27 @@
 
                                     <p class="card__text"><?= $team[4] ?></p>
 
-                                    <?php
-                                        $dancer = mysqli_query($connect, "SELECT dancers.id_dancer, dancers.name_dancer FROM dancers
+                                    
+                                        <div class="card__list">
+                                            <span class="span-accent">Dancers: </span>
+                                            <span class="list--inline">
+                                            <?php
+                                            $dancers = mysqli_query($connect, "SELECT dancers.id_dancer, dancers.name_dancer FROM dancers
                                             JOIN dancer_team
                                             ON dancers.id_dancer = dancer_team.id_dancer
                                             JOIN teams
                                             ON teams.id_team = dancer_team.id_team
                                             WHERE teams.id_team = '$team[0]';");
-                                        $dancer = mysqli_fetch_all($dancer);
-
-                                        if ($dancer) { 
-                                    ?>
-                                        <div class="card__list">
-                                            <span class="span-accent">Dancers: </span>
-                                            <span class="list--inline">
-                                            <?php
-                                                foreach ($dancer as $dancer) {
-                                            ?>
+                                            while ($dancer = mysqli_fetch_assoc($dancers)):
+                                        ?>
                                                 <span class="list--inline__item">
-                                                    <a href="dancers.php#<?= $dancer[1] ?>"><?= $dancer[1] ?></a>
+                                                    <!-- <a href="dancers.php#<?= $dancer[1] ?>"><?= $dancer[1] ?></a> -->
+                                                    <a href="dancers.php#dancer-<?= $dancer['id_dancer'] ?>"><?= $dancer['name_dancer'] ?></a>
+
                                                 </span>                                           
-                                            <?php
-                                                } 
-                                            ?>
+                                            <?php endwhile; ?>
                                         </div>
-                                    <?php
-                                        }
-                                    ?>
+                                    
                                     <div class="card__list">
                                         <span class="span-accent">Link: </span>
                                         <span class="list--inline"><a href="<?= $team[3] ?>"><?= $team[3] ?></a></span>
@@ -193,13 +188,13 @@
             <div class="modal__content">
                 <div class="modal__header">
                     <span class="modal__title">Authorization</span>
-                    <button id="closeModalBtn" class="modal__close-btn">Close</button>
+                    <button id="closeModalBtn">Close</button>
                 </div>
                 
                 <div class="modal__body">
                     <form action="vendor/sign_in.php" id="loginForm" method="post" class="form">
                         <div class="form__group">
-                            <label for="email" class="form__label">E-mail</label>
+                            <label for="loginEmail" class="form__label">E-mail</label>
                             <input
                                 type="email"
                                 id="loginEmail"
@@ -211,7 +206,7 @@
                             />
                         </div>
                         <div class="form__group">
-                            <label for="password" class="form__label">Password</label>
+                            <label for="loginPassword" class="form__label">Password</label>
                             <input
                                 type="password"
                                 id="loginPassword"

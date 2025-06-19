@@ -61,7 +61,7 @@ h1,
 
 h2,
 .h2 {
-  @include fluid-text(30, 36);
+  @include fluid-text(20, 36);
   color: var(--color-accent);
   text-transform: uppercase;
 }
@@ -140,7 +140,8 @@ button {
 }
 
 input,
-textarea {
+textarea,
+select {
   padding: 10px;
   margin: 10px 0px;
   border-radius: 10px;
@@ -159,6 +160,53 @@ textarea {
 
 input {
   width: 350px;
+}
+
+textarea {
+  min-height: 150px;
+}
+
+/* Radio Buttons */
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.radio-input {
+  display: none;
+}
+
+.radio-custom {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.radio-input:checked + .radio-custom {
+  border-color: var(--color-accent);
+}
+
+.radio-input:checked + .radio-custom::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 8px;
+  height: 8px;
+  background: var(--color-accent);
+  border-radius: 50%;
 }
 
 // Миксин для создания кнопок разной ширины
@@ -201,4 +249,109 @@ button.with-icon {
 
 .footer {
   flex-shrink: 0;
+}
+
+/* Radio Buttons */
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.radio-input {
+  display: none;
+}
+
+.radio-custom {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.radio-input:checked + .radio-custom {
+  border-color: var(--color-accent);
+}
+
+.radio-input:checked + .radio-custom::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 8px;
+  height: 8px;
+  background: var(--color-accent);
+  border-radius: 50%;
+}
+
+/* Multi-Select Components */
+.multi-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.selected-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.selected-tag {
+  background: var(--color-accent-light);
+  color: var(--color-white);
+  padding: 2px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+// крестик на теге
+.selected-tag button {
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0;
+}
+
+/* Buttons */
+.form-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+// /* Responsive Adjustments */
+// @media (max-width: 768px) {
+//   .form-grid {
+//     grid-template-columns: 1fr;
+//   }
+
+//   .city-selectors {
+//     grid-template-columns: 1fr;
+//   }
+// }
+
+.no-marg {
+  margin: none;
 }
